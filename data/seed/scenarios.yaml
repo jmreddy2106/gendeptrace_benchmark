@@ -1,0 +1,81 @@
+# Real, currently-existing package versions.
+# Versions chosen from public registries as of the benchmark build date.
+# The benchmark builder verifies existence at build time and skips any
+# version that no longer exists.
+
+python:
+  popular:
+    - {name: requests,     versions: ["2.31.0", "2.32.3"]}
+    - {name: django,       versions: ["4.2.11", "5.0.6"]}
+    - {name: flask,        versions: ["2.3.3", "3.0.3"]}
+    - {name: numpy,        versions: ["1.26.4", "2.0.1"]}
+    - {name: cryptography, versions: ["41.0.7", "42.0.7"]}
+    - {name: fastapi,      versions: ["0.109.2", "0.111.0"]}
+    - {name: pandas,       versions: ["2.2.2"]}
+    - {name: jinja2,       versions: ["3.1.4"]}
+    - {name: urllib3,      versions: ["2.2.1"]}
+    - {name: setuptools,   versions: ["69.5.1"]}
+    - {name: pydantic,     versions: ["2.6.4"]}
+    - {name: aiohttp,      versions: ["3.9.5"]}
+    - {name: beautifulsoup4, versions: ["4.12.3"]}
+    - {name: pillow,       versions: ["10.3.0"]}
+    - {name: pip,          versions: ["24.0"]}
+
+  vulnerable_candidates:
+    # Versions with known OSV findings (verified at build time).
+    - {name: django,       versions: ["2.0.0", "3.2.0"]}
+    - {name: requests,     versions: ["2.19.0"]}
+    - {name: cryptography, versions: ["2.0.0"]}
+    - {name: jinja2,       versions: ["2.10"]}
+    - {name: urllib3,      versions: ["1.24.1"]}
+    - {name: pillow,       versions: ["8.0.0"]}
+    - {name: flask,        versions: ["0.12.0"]}
+    - {name: pyyaml,       versions: ["5.1"]}
+
+  stale_candidates:
+    # Older but real versions.
+    - {name: requests,     versions: ["2.25.0"]}
+    - {name: django,       versions: ["3.2.0"]}
+    - {name: flask,        versions: ["2.0.0"]}
+    - {name: numpy,        versions: ["1.21.0"]}
+    - {name: cryptography, versions: ["36.0.0"]}
+
+  transitive_candidates:
+    # Top-level packages with meaningful transitive dependency graphs.
+    - {name: requests,     versions: ["2.31.0"]}
+    - {name: flask,        versions: ["3.0.3"]}
+    - {name: fastapi,      versions: ["0.111.0"]}
+    - {name: aiohttp,      versions: ["3.9.5"]}
+    - {name: django,       versions: ["4.2.11"]}
+
+javascript:
+  popular:
+    - {name: express,      versions: ["4.19.2", "4.18.2"]}
+    - {name: axios,        versions: ["1.6.8", "1.7.2"]}
+    - {name: lodash,       versions: ["4.17.21"]}
+    - {name: react,        versions: ["18.2.0", "18.3.1"]}
+    - {name: next,         versions: ["14.2.3"]}
+    - {name: webpack,      versions: ["5.91.0"]}
+    - {name: minimist,     versions: ["1.2.8"]}
+    - {name: semver,       versions: ["7.6.0"]}
+    - {name: jsonwebtoken, versions: ["9.0.2"]}
+    - {name: commander,    versions: ["12.0.0"]}
+
+  vulnerable_candidates:
+    - {name: lodash,       versions: ["4.17.15"]}
+    - {name: minimist,     versions: ["1.2.0"]}
+    - {name: axios,        versions: ["0.21.0"]}
+    - {name: express,      versions: ["4.16.0"]}
+    - {name: jsonwebtoken, versions: ["8.5.0"]}
+    - {name: semver,       versions: ["7.0.0"]}
+
+  stale_candidates:
+    - {name: express,      versions: ["4.17.1"]}
+    - {name: lodash,       versions: ["4.17.20"]}
+    - {name: axios,        versions: ["0.21.4"]}
+
+  transitive_candidates:
+    - {name: express,      versions: ["4.19.2"]}
+    - {name: next,         versions: ["14.2.3"]}
+    - {name: axios,        versions: ["1.6.8"]}
+    - {name: webpack,      versions: ["5.91.0"]}

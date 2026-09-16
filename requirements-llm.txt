@@ -1,0 +1,7 @@
+# Optional: only needed for the LLM pass.
+# The synthetic pass does not require these.
+torch>=2.1.0
+transformers>=4.40.0
+accelerate>=0.28.0
+sentencepiece>=0.2.0
+protobuf>=4.25.0

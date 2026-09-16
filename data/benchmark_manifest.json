@@ -1,0 +1,16 @@
+benchmark: GenDepBench
+version: '0.2'
+tasks: 300
+seed: 20260812
+created_at: '2026-09-12T05:41:22Z'
+scenario_counts:
+  transitive: 50
+  legitimate: 50
+  confusable_nonexistent: 41
+  vulnerable: 50
+  stale: 50
+  hallucinated: 50
+  confusable_resolvable: 9
+notes: All legitimate and stale versions were verified against the live registry at
+  build time. Hallucinated names were verified to be unregistered. Confusable names
+  were verified and sub-classified as confusable_resolvable or confusable_nonexistent.

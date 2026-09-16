@@ -1,0 +1,27 @@
+# Plausible-sounding compound names, unlikely to be registered.
+# The builder verifies each name against the registry. If it resolves,
+# the name is dropped from the hallucinated pool.
+
+pypi:
+  - requests-http-utils
+  - django-cache-plus
+  - numpy-stats-extra
+  - flask-auth-core
+  - fastapi-sqlmodel-plus
+  - pandas-reader-utils
+  - py-ai-helper
+  - json-parse-plus
+  - aiohttp-middleware-plus
+  - cryptography-helpers
+
+npm:
+  - express-router-plus
+  - lodash-fp-extra
+  - react-hooks-plus
+  - axios-interceptor-utils
+  - next-plugin-helper
+  - webpack-loader-plus
+  - semver-utils-plus
+  - minimist-parser-extra
+  - jsonwebtoken-helpers
+  - commander-cli-plus

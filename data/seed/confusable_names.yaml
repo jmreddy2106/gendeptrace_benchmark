@@ -1,0 +1,29 @@
+# Realistic typosquat / name-confusion candidates.
+# The builder verifies existence. If the name resolves, the task is
+# labeled confusable_resolvable (expected: REVIEW or BLOCK).
+# If it does not resolve, the task is labeled confusable_nonexistent
+# (expected: BLOCK).
+
+pypi:
+  requests:     ["reqeusts", "requsets", "reques-ts"]
+  urllib3:      ["urlib3", "urllib-3", "urlllib3"]
+  numpy:        ["numpyy", "num-py", "nurnpy"]
+  flask:        ["flassk", "fla-sk", "flaskk"]
+  django:       ["djangoo", "djang-o", "django3"]
+  fastapi:      ["fast-api", "fastpi", "fstapi"]
+  pandas:       ["pandass", "pan-das", "pandsa"]
+  jinja2:       ["jinja-2", "jinjaa2", "jinj2"]
+  cryptography: ["cryptograph", "crytography", "crypto-graphy"]
+  pydantic:     ["py-dantic", "pydanticc", "pydatnic"]
+
+npm:
+  express:      ["expres", "expres-s", "expreess"]
+  lodash:       ["lodahs", "loda-sh", "lodassh"]
+  axios:        ["axioss", "axio-s", "axois"]
+  react:        ["reac-t", "reaact", "reakt"]
+  minimist:     ["minimis-t", "minimmist", "minimistt"]
+  semver:       ["semve-r", "semmver", "semverr"]
+  webpack:      ["webpac", "web-pack", "webpackk"]
+  jsonwebtoken: ["jsonwebtoke", "json-web-token", "jsonwebtokenn"]
+  next:         ["nex-t", "nextt", "neext"]
+  commander:    ["commanderr", "commader", "com-mander"]

@@ -1,0 +1,61 @@
+apis:
+  pypi_url: "https://pypi.org/pypi/{name}/json"
+  npm_url:  "https://registry.npmjs.org/{name}"
+  osv_url:  "https://api.osv.dev/v1/query"
+  timeout_seconds: 20
+  user_agent: "GenDepBench/1.0 (dependency-security-research)"
+
+risk:
+  weights:
+    hallucination: 0.30
+    vulnerability: 0.25
+    transitive:    0.15
+    health:        0.10
+    provenance:    0.10
+    unpinned:      0.10
+  thresholds:
+    review: 0.30
+    block:  0.65
+
+policy:
+  block_unresolved: true
+  block_critical_high_vulnerabilities: true
+  review_medium_vulnerabilities: true
+  require_version: true
+  review_on_registry_error: true
+
+benchmark:
+  tasks: 300
+  seed: 20260812
+  scenario_order:
+    - legitimate
+    - vulnerable
+    - hallucinated
+    - confusable
+    - stale
+    - transitive
+
+generation:
+  default_model: "synthetic"     # use "synthetic" to avoid an LLM dependency
+  max_input_tokens: 1536
+  max_new_tokens: 256
+  temperature: 0.2
+  top_p: 0.9
+  do_sample: true
+
+baselines:
+  run_real_tools: true
+  pip_audit_cmd: "pip-audit"
+  npm_audit_cmd: "npm audit"
+  syft_cmd: "syft"
+  grype_cmd: "grype"
+
+sensitivity:
+  weight_grid:
+    - {hallucination: 0.20, vulnerability: 0.30, transitive: 0.15, health: 0.10, provenance: 0.15, unpinned: 0.10}
+    - {hallucination: 0.30, vulnerability: 0.25, transitive: 0.15, health: 0.10, provenance: 0.10, unpinned: 0.10}
+    - {hallucination: 0.40, vulnerability: 0.20, transitive: 0.15, health: 0.10, provenance: 0.10, unpinned: 0.05}
+  threshold_grid:
+    - {review: 0.20, block: 0.55}
+    - {review: 0.30, block: 0.65}
+    - {review: 0.40, block: 0.75}
