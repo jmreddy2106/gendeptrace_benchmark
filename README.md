@@ -11,7 +11,9 @@ The point is to catch a hallucinated, confusable, or stale dependency *before*
 it reaches a build, not after. Existing scanners start with a dependency set
 that is presumed valid. This one doesn't.
 
-    ---
+---
+
+![architecture](images/fig1.png)
 
 ## Table of contents
 
@@ -31,7 +33,7 @@ that is presumed valid. This one doesn't.
 - [Limitations](#limitations)
 - [Citation](#citation)
 
-    ---
+---
 
     ## What's in the box
 
