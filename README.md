@@ -15,6 +15,7 @@ that is presumed valid. This one doesn't.
 
 ![architecture](images/fig1.png)
 
+--- 
 ## Table of contents
 
 - [What's in the box](#whats-in-the-box)
@@ -35,64 +36,64 @@ that is presumed valid. This one doesn't.
 
 ---
 
-    ## What's in the box
+## What's in the box
 
-    - A 300-task benchmark across PyPI and npm, covering six scenarios:
-      legitimate, vulnerable, hallucinated, confusable, stale, transitive.
-    - A deterministic synthetic generator that isolates the policy from
-      generation noise.
-    - Wrappers for local HuggingFace models (Qwen, Llama, anything with a
-      `generate()` method).
-    - Five matched baselines (B0–B4) plus the full pipeline (GDT).
-    - Sensitivity analysis and failure injection harnesses.
-    - Real SCA tool integration: `pip-audit`, `npm audit`, `syft`, `grype`.
+- A 300-task benchmark across PyPI and npm, covering six scenarios:
+    legitimate, vulnerable, hallucinated, confusable, stale, transitive.
+- A deterministic synthetic generator that isolates the policy from
+    generation noise.
+- Wrappers for local HuggingFace models (Qwen, Llama, anything with a
+    `generate()` method).
+- Five matched baselines (B0–B4) plus the full pipeline (GDT).
+- Sensitivity analysis and failure injection harnesses.
+- Real SCA tool integration: `pip-audit`, `npm audit`, `syft`, `grype`.
 
-    ---
+---
 
-    ## Requirements
+## Requirements
 
-    ### Operating system
+### Operating system
 
-    Linux, macOS, or WSL. The pipeline shells out to `pip-audit`, `npm`,
-    `syft`, and `grype`, so it expects a Unix-like environment.
+Linux, macOS, or WSL. The pipeline shells out to `pip-audit`, `npm`,
+`syft`, and `grype`, so it expects a Unix-like environment.
 
-    ### Python
+### Python
 
-    Python 3.10 or newer. The environment used for the reported experiments was
-    Python 3.11 on Ubuntu 22.04.
+Python 3.10 or newer. The environment used for the reported experiments was
+Python 3.11 on Ubuntu 22.04.
 
-    ### Hardware
+### Hardware
 
-    - **Synthetic runs only:** any CPU. No GPU needed.
-    - **LLM runs (Qwen 1.5B, Llama 8B):** GPU strongly recommended. A modern
-      NVIDIA GPU with compute capability 7.5 or higher (Turing, Ampere,
-      Hopper) and at least 8 GB of VRAM. CPU fallback works but is slow:
-      20–60 seconds per task for Qwen, several minutes per task for Llama.
-    - **Disk:** roughly 30 GB free for model weights, cache, and results.
+- **Synthetic runs only:** any CPU. No GPU needed.
+- **LLM runs (Qwen 1.5B, Llama 8B):** GPU strongly recommended. A modern
+    NVIDIA GPU with compute capability 7.5 or higher (Turing, Ampere,
+    Hopper) and at least 8 GB of VRAM. CPU fallback works but is slow:
+    20–60 seconds per task for Qwen, several minutes per task for Llama.
+- **Disk:** roughly 30 GB free for model weights, cache, and results.
 
-    ### External tools
+### External tools
 
-    Optional but recommended:
+Optional but recommended:
 
-    | Tool | Purpose | Ecosystem |
-    |---|---|---|
-    | `pip-audit` | Vulnerability scan on Python deps | PyPI |
-    | `npm audit` | Vulnerability scan on JS deps | npm |
-    | `syft` | SBOM generation baseline | Both |
-    | `grype` | Vulnerability scan baseline | Both |
+| Tool | Purpose | Ecosystem |
+|---|---|---|
+| `pip-audit` | Vulnerability scan on Python deps | PyPI |
+| `npm audit` | Vulnerability scan on JS deps | npm |
+| `syft` | SBOM generation baseline | Both |
+| `grype` | Vulnerability scan baseline | Both |
 
-    Missing tools are recorded as `unavailable` in the output and don't fail the
-    pipeline.
+Missing tools are recorded as `unavailable` in the output and don't fail the
+pipeline.
 
-    ---
+---
 
-    ## Install
+## Install
 
-    ### 1. Clone the repository
+### 1. Clone the repository
 
-    ```bash
-    git clone https://github.com/<your-org>/gendeptrace.git
-    cd gendeptrace
+```bash
+git clone https://github.com/https://github.com/jmreddy2106/gendeptrace_benchmark.git
+cd gendeptrace
 
 ### 2. Create a virtual environment
 
@@ -114,13 +115,15 @@ Contents of `requirements.txt`:
     numpy>=1.24.0
     PyYAML>=6.0
     huggingface-hub>=0.22.0
+```
 
 ### 4. Install the LLM extras
 
-Only needed if you plan to run generation with an actual model. Skip
-this if you're only running the synthetic generator.
+Only needed if you plan to run generation with an actual model. Skip this if you are nly running the synthetic generator.
 
-    pip install -r requirements-llm.txt
+```bash
+pip install -r requirements-llm.txt
+
 
 Contents of `requirements-llm.txt`:
 
@@ -154,7 +157,7 @@ Verify:
 Expected output (adjust for your CUDA version):
 
     2.11.0+cu128 12.8 True
-
+```
 If `False` prints at the end, PyTorch sees no usable GPU. See Common
 issues.
 
@@ -163,40 +166,42 @@ issues.
 Skip anything you don't need. Missing tools are handled gracefully.
 
 **pip-audit:**
-
-    pip install pip-audit
+```bash
+pip install pip-audit
+```
 
 **Node.js and npm** (for `npm audit`):
+```bash
+# Debian / Ubuntu
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt-get install -y nodejs
 
-    # Debian / Ubuntu
-    curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
-    sudo apt-get install -y nodejs
+# RHEL / Fedora
+curl -fsSL https://rpm.nodesource.com/setup_22.x | sudo bash -
+sudo dnf install -y nodejs
 
-    # RHEL / Fedora
-    curl -fsSL https://rpm.nodesource.com/setup_22.x | sudo bash -
-    sudo dnf install -y nodejs
-
-    # macOS
-    brew install node
-
+# macOS
+brew install node
+```
 **Syft and Grype:**
+```bash
+# Linux install script
+curl -sSfL https://get.anchore.io/syft | sudo sh -s -- -b /usr/local/bin
+curl -sSfL https://get.anchore.io/grype | sudo sh -s -- -b /usr/local/bin
 
-    # Linux install script
-    curl -sSfL https://get.anchore.io/syft | sudo sh -s -- -b /usr/local/bin
-    curl -sSfL https://get.anchore.io/grype | sudo sh -s -- -b /usr/local/bin
+# macOS
+brew install syft grype
 
-    # macOS
-    brew install syft grype
-
-    # Verify
-    which pip-audit npm syft grype
+# Verify
+which pip-audit npm syft grype
+```
 
 ### 6. Verify the full install
-
-    python -c "import requests, pandas, scipy, numpy, yaml, torch, transformers; print('python: ok')"
-    which pip-audit npm syft grype || true
-    python -c "import torch; print('cuda:', torch.cuda.is_available())"
-
+```bash
+python -c "import requests, pandas, scipy, numpy, yaml, torch, transformers; print('python: ok')"
+which pip-audit npm syft grype || true
+python -c "import torch; print('cuda:', torch.cuda.is_available())"
+```
 You should see `python: ok`, one path per installed tool,
 and `cuda: True` if you have a working GPU.
 
@@ -212,11 +217,11 @@ token. This section walks through the full flow.
 
 If you don't have one:
 
-<https://huggingface.co/join>
+https://huggingface.co/join
 
 ### Step 2 --- Create an access token
 
-Go to <https://huggingface.co/settings/tokens> and create a token
+Go to https://huggingface.co/settings/tokens and create a token
 with **Read** scope. Copy the token --- you'll paste it once in the next
 step.
 
@@ -224,7 +229,7 @@ step.
 
 Open the model page while logged in:
 
-<https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct>
+https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct
 
 Click **"Agree and access repository"** and fill in the form. Meta
 reviews these manually. Approval usually takes a few minutes to a few
@@ -236,45 +241,47 @@ page. If the button now says "You have access", you're approved.
 ### Step 4 --- Log in on the machine where you'll run the pipeline
 
 The old `huggingface-cli login` command is deprecated. Use `hf`:
+```bash
+# Install the CLI if needed
+pip install -U "huggingface_hub[cli]"
 
-    # Install the CLI if needed
-    pip install -U "huggingface_hub[cli]"
-
-    # Log in
-    hf auth login
-
+# Log in
+hf auth login
+```
 Paste the token when prompted.
 
 Verify:
-
-    hf auth whoami
-
+```bash
+hf auth whoami
+```
 You should see your username.
 
 ### Step 5 --- Verify model access
-
-    python - <<'PY'
-    from huggingface_hub import hf_hub_download
-    for m in ["Qwen/Qwen2.5-1.5B-Instruct", "meta-llama/Llama-3.1-8B-Instruct"]:
-        try:
-            hf_hub_download(m, "config.json")
-            print(f"{m}: OK")
-        except Exception as e:
-            print(f"{m}: {type(e).__name__}")
-    PY
+```bash
+python - <<'PY'
+from huggingface_hub import hf_hub_download
+for m in ["Qwen/Qwen2.5-1.5B-Instruct", "meta-llama/Llama-3.1-8B-Instruct"]:
+    try:
+        hf_hub_download(m, "config.json")
+        print(f"{m}: OK")
+    except Exception as e:
+        print(f"{m}: {type(e).__name__}")
+PY
+```
 
 Expected:
-
-    Qwen/Qwen2.5-1.5B-Instruct: OK
-    meta-llama/Llama-3.1-8B-Instruct: OK
-
+```bash
+Qwen/Qwen2.5-1.5B-Instruct: OK
+meta-llama/Llama-3.1-8B-Instruct: OK
+```
 If Llama prints `GatedRepoError`, your access request is still pending.
 The pipeline will skip Llama and continue with the other runs. Rerun
 once access is granted.
 
 ### Using a token via environment (for CI or headless servers)
-
-    export HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxxxxxx
+```bash
+export HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxxxxxx
+```
 
 The `transformers` library picks this up automatically.
 
@@ -295,12 +302,12 @@ Other ungated options:
 ------------------------------------------------------------------------
 
 ## Quick start
-
-    # Everything: synthetic + Qwen + Llama, if models are accessible
-    bash scripts/08_full_pipeline.sh
-
+```bash
+# Everything: synthetic + Qwen + Llama, if models are accessible
+bash scripts/08_full_pipeline.sh
+```
 Or run only what you need:
-
+```bash
     # Synthetic only (fast, deterministic, no GPU needed)
     SKIP_QWEN=1 SKIP_LLAMA=1 bash scripts/08_full_pipeline.sh
 
@@ -312,23 +319,25 @@ Or run only what you need:
 
     # Refresh analysis without regenerating anything
     SKIP_SYNTHETIC=1 SKIP_QWEN=1 SKIP_LLAMA=1 bash scripts/08_full_pipeline.sh
-
+```
 Under tmux, with timestamps in the log:
-
-    tmux new -s gendep
-    bash scripts/08_full_pipeline.sh 2>&1 \
-        | awk '{ print strftime("[%Y-%m-%d %H:%M:%S]"), $0; fflush() }' \
-        | tee logs/pipeline.log
-    # Ctrl-b d to detach
+```bash
+tmux new -s gendep
+bash scripts/08_full_pipeline.sh 2>&1 \
+    | awk '{ print strftime("[%Y-%m-%d %H:%M:%S]"), $0; fflush() }' \
+    | tee logs/pipeline.log
+# Ctrl-b d to detach
+```
 
 Reattach later:
 
-    tmux attach -t gendep
-
+```bash
+tmux attach -t gendep
+```
 Watch progress from another shell:
-
-    tail -f logs/pipeline.log
-
+```bash
+tail -f logs/pipeline.log
+```
 ------------------------------------------------------------------------
 
 ## Configuration
@@ -372,9 +381,9 @@ The pipeline reads environment variables at the top of
   --------------------------------------------------------------------------------------
 
 Example: run with a smaller generation budget and no Llama:
-
-    SKIP_LLAMA=1 MAX_NEW_TOKENS=128 bash scripts/08_full_pipeline.sh
-
+```bash
+SKIP_LLAMA=1 MAX_NEW_TOKENS=128 bash scripts/08_full_pipeline.sh
+``
 All defaults live in `configs/default.yaml`. The risk weights, policy
 thresholds, registry endpoints, and API timeouts are all there.
 
@@ -427,15 +436,14 @@ thresholds, registry endpoints, and API timeouts are all there.
     ├── requirements-llm.txt
     ├── LICENSE
     └── README.md
+```
 
 ------------------------------------------------------------------------
 
 ## How the pipeline works
 
 Each generated program enters the extractor, which produces a set of
-normalized dependency claims. Standard-library imports are filtered out
-before any registry lookup. Each remaining claim is resolved against the
-appropriate registry and queried against OSV. The resulting evidence
+normalized dependency claims. Standard-library imports are filtered out before any registry lookup. Each remaining claim is resolved against the appropriate registry and queried against OSV. The resulting evidence
 record feeds three downstream artifacts: a CycloneDX SBOM, a provenance
 record, and a policy decision.
 
@@ -447,8 +455,7 @@ The evidence model separates two things that most scanners conflate:
 
 A package that doesn't exist at all is a different problem from a
 package that exists at a version that doesn't. The first is blocked. The
-second is routed to review. A scanner that collapses the two can't tell
-a slopsquatting candidate from a stale pin.
+second is routed to review. A scanner that collapses the two can't tell a slopsquatting candidate from a stale pin.
 
 For verified packages, six normalized factors feed a weighted score:
 hallucination/identity risk, vulnerability risk, transitive risk,
@@ -462,43 +469,44 @@ is a hard gate that ignores the score entirely.
 
 If you want to run each stage by hand instead of using the wrapper:
 
-    # 1. Build the benchmark (verifies versions against live registries)
-    python scripts/01_build_benchmark.py
+# 1. Build the benchmark (verifies versions against live registries)
+```bash
+python scripts/01_build_benchmark.py
 
-    # 2. Generate code
-    python scripts/02_run_generation.py \
+# 2. Generate code
+python scripts/02_run_generation.py \
+    --benchmark data/benchmark.jsonl \
+    --outdir results/llm_qwen \
+    --model Qwen/Qwen2.5-1.5B-Instruct \
+    --max-new-tokens 128
+
+# 3. Evaluate every system
+for s in B0 B1 B2 B3 B4 GDT; do
+    python scripts/03_run_evaluation.py \
         --benchmark data/benchmark.jsonl \
         --outdir results/llm_qwen \
-        --model Qwen/Qwen2.5-1.5B-Instruct \
-        --max-new-tokens 128
+        --config configs/default.yaml \
+        --system "$s" \
+        --timing
+done
 
-    # 3. Evaluate every system
-    for s in B0 B1 B2 B3 B4 GDT; do
-        python scripts/03_run_evaluation.py \
-            --benchmark data/benchmark.jsonl \
-            --outdir results/llm_qwen \
-            --config configs/default.yaml \
-            --system "$s" \
-            --timing
-    done
+# 4. Real SCA tools
+python scripts/04_run_real_baselines.py --outdir results/llm_qwen
 
-    # 4. Real SCA tools
-    python scripts/04_run_real_baselines.py --outdir results/llm_qwen
+# 5. Sensitivity and failure injection (synthetic only)
+python scripts/05_run_sensitivity.py --outdir results/synthetic
+python scripts/06_run_failure_injection.py --outdir results/synthetic
 
-    # 5. Sensitivity and failure injection (synthetic only)
-    python scripts/05_run_sensitivity.py --outdir results/synthetic
-    python scripts/06_run_failure_injection.py --outdir results/synthetic
+# 6. Aggregate
+python scripts/07_analyze.py --outdir results/llm_qwen
 
-    # 6. Aggregate
-    python scripts/07_analyze.py --outdir results/llm_qwen
-
-    # 7. Cross-run comparison
-    python scripts/09_compare_runs.py \
-        --run synthetic=results/synthetic \
-        --run qwen=results/llm_qwen \
-        --run llama=results/llm_llama \
-        --outdir results/comparison
-
+# 7. Cross-run comparison
+python scripts/09_compare_runs.py \
+    --run synthetic=results/synthetic \
+    --run qwen=results/llm_qwen \
+    --run llama=results/llm_llama \
+    --outdir results/comparison
+```
 ------------------------------------------------------------------------
 
 ## Outputs
@@ -545,14 +553,16 @@ The `results/comparison/` directory holds:
 
 Quick check after a run:
 
-    # How many tasks completed
-    for d in results/synthetic results/llm_qwen results/llm_llama; do
-        [ -f "$d/generation.jsonl" ] && echo "$d: $(wc -l < $d/generation.jsonl) tasks"
-    done
+# How many tasks completed
+```bash
+for d in results/synthetic results/llm_qwen results/llm_llama; do
+    [ -f "$d/generation.jsonl" ] && echo "$d: $(wc -l < $d/generation.jsonl) tasks"
+done
 
-    # Summary table
-    cat results/synthetic/experiment_summary.csv
-    cat results/comparison/cross_run.csv
+# Summary table
+cat results/synthetic/experiment_summary.csv
+cat results/comparison/cross_run.csv
+```
 
 ------------------------------------------------------------------------
 
@@ -562,66 +572,72 @@ Quick check after a run:
 
 Modern PyTorch requires compute capability 7.5 or higher. Tesla M10,
 K80, and other Maxwell-era cards are CC 5.0 and will crash with:
+```bash
+CUDA error: no kernel image is available for execution on the device
+```
 
-    CUDA error: no kernel image is available for execution on the device
-
-The `generation.py` loader detects this automatically and falls back to
-CPU. You can also force it:
-
-    FORCE_CPU=1 bash scripts/08_full_pipeline.sh
-
+The `generation.py` loader detects this automatically and falls back to CPU. You can also force it:
+```bash
+FORCE_CPU=1 bash scripts/08_full_pipeline.sh
+```
 Check what compute capability your GPU has:
-
-    python -c "import torch; print(torch.cuda.get_device_capability(0))"
-
+```bash
+python -c "import torch; print(torch.cuda.get_device_capability(0))"
+```
 If it prints `(5, 0)` or `(6, 1)`, you're on Maxwell or Pascal and CPU
 is your only option.
 
 ### CUDA driver too old
-
-    UserWarning: CUDA initialization: The NVIDIA driver on your system is too old
-
+```bash
+UserWarning: CUDA initialization: The NVIDIA driver on your system is too old
+```
 Your PyTorch build expects a newer driver than you have. Reinstall
 PyTorch for your actual CUDA version:
 
-    pip uninstall -y torch torchvision torchaudio
-    pip install torch --index-url https://download.pytorch.org/whl/cu121
-
+```bash
+pip uninstall -y torch torchvision torchaudio
+pip install torch --index-url https://download.pytorch.org/whl/cu121
+```
 Match the `cuXXX` suffix to your driver. `nvidia-smi` shows the version
 at the top right.
 
 ### Gated HuggingFace models
-
-    GatedRepoError: 403 Client Error
-    Cannot access gated repo for url ...
+```bash
+GatedRepoError: 403 Client Error
+Cannot access gated repo for url ...
+```
 
 Either your request is still pending, or you haven't logged in on this
 machine. See HuggingFace setup.
 
 Quick diagnostic:
-
-    hf auth whoami
-    python -c "from huggingface_hub import hf_hub_download; hf_hub_download('meta-llama/Llama-3.1-8B-Instruct', 'config.json')"
+```bash
+hf auth whoami
+python -c "from huggingface_hub import hf_hub_download; hf_hub_download('meta-llama/Llama-3.1-8B-Instruct', 'config.json')"
+```
 
 ### Out of memory during generation
 
 For large models on small GPUs:
-
+```bash
     LOAD_IN_4BIT=1 bash scripts/08_full_pipeline.sh
-
+```
 Requires `pip install bitsandbytes`. Brings an 8B model down to \~6 GB
 VRAM.
 
 For CPU runs, reduce the generation budget:
 
-    MAX_NEW_TOKENS=64 bash scripts/08_full_pipeline.sh
+```bash
+MAX_NEW_TOKENS=64 bash scripts/08_full_pipeline.sh
+```
 
 ### `mkdir: cannot create directory`
 
 The pipeline expects to run from the repository root. Check:
-
-    pwd
-    ls -la gendepbench/
+```bash
+pwd
+ls -la gendepbench/
+```
 
 If you're somewhere else, `cd` back to the repo root.
 
@@ -629,8 +645,9 @@ If you're somewhere else, `cd` back to the repo root.
 
 The evidence cache stores every registry and OSV response keyed by a
 hash of the request. If you hit rate limits:
-
-    rm -rf evidence_cache/
+```bash
+rm -rf evidence_cache/
+```
 
 ### The old pipeline used to overwrite runs
 
@@ -638,22 +655,21 @@ If you ran an earlier version of the pipeline that wrote everything to
 `results/llm/`, the current script uses separate directories
 (`results/llm_qwen/`, `results/llm_llama/`). Move existing output
 manually:
+```bash
 
-    mv results/llm results/llm_llama   # if it contains Llama output
-
+mv results/llm results/llm_llama   # if it contains Llama output
+```
 ------------------------------------------------------------------------
 
 ## Reproducing the paper
 
 The pipeline is deterministic given the same benchmark and the same
-model. The benchmark builder uses a fixed seed (`20260812`) and verifies
-every version against the live registry at build time, so the exact
-package set may drift as registries change. To reproduce the reported
-numbers:
+model. The benchmark builder uses a fixed seed (`20260812`) and verifies every version against the live registry at build time, so the exact package set may drift as registries change. To reproduce the reported numbers:
 
-    # 1. Fresh benchmark
-    FORCE_REBUILD=1 bash scripts/08_full_pipeline.sh
-
+```bash
+# 1. Fresh benchmark
+FORCE_REBUILD=1 bash scripts/08_full_pipeline.sh
+```
 Benchmark and generation records store:
 
 -   The benchmark seed
@@ -668,10 +684,10 @@ change from a policy decision.
 ### Cost of a full run
 
 On a machine with an Ampere or Hopper GPU:
-
+```bash
   **StageTime**                     
   --------------------------------- ------------------
-  Benchmark build                   3--5 min
+  Benchmark build                   3--5 min 
   Synthetic run + evaluation        \~30 s
   Qwen 1.5B generation              5--10 min
   Qwen evaluation                   \~2 min
@@ -681,13 +697,14 @@ On a machine with an Ampere or Hopper GPU:
   Sensitivity + failure injection   \~1 min
   Comparison                        \<1 min
   **Total**                         **\~45--60 min**
-
+```
 On CPU only:
-
+```bash
   **Stage**              **Time**
   ---------------------- -------------
   Qwen 1.5B generation   2--4 hours
   Llama 8B generation    8--12 hours
+```
 
 If you're CPU-bound, run Qwen only and skip Llama.
 
@@ -697,20 +714,11 @@ If you're CPU-bound, run Qwen only and skip Llama.
 
 **Why separate package and version existence.** A package that doesn't
 exist is a hallucination or a slopsquatting target. A package that
-exists at a version that doesn't is a stale or fabricated pin. Treating
-them the same would hide the distinction that matters most for
-remediation.
+exists at a version that doesn't is a stale or fabricated pin. Treating them the same would hide the distinction that matters most for remediation.
 
-**Why a REVIEW tier.** Not every risky dependency should block a build.
-Version-not-found and registry-error states are uncertainty, not
-failure. REVIEW stops installation until a human approves or additional
-evidence arrives. It is not a silent allow.
+**Why a REVIEW tier.** Not every risky dependency should block a build. Version-not-found and registry-error states are uncertainty, not failure. REVIEW stops installation until a human approves or additional evidence arrives. It is not a silent allow.
 
-**Why evidence before SBOM.** An SBOM built from unverified model output
-will happily record a package that doesn't exist. GenDepTrace acquires
-identity evidence first, then writes the SBOM from the verified set. The
-provenance record captures the registry and OSV evidence behind every
-decision.
+**Why evidence before SBOM.** An SBOM built from unverified model output will happily record a package that doesn't exist. GenDepTrace acquires identity evidence first, then writes the SBOM from the verified set. The provenance record captures the registry and OSV evidence behind every decision.
 
 **Why the registry-only control (B4).** It blocks the same nonexistent
 packages that GenDepTrace does. The value GenDepTrace adds over B4 is
@@ -744,12 +752,12 @@ The two views answer different questions and both are reported.
 
 ## Citation
 
-bibtex
+```bash
 
-    @inproceedings{gendeptrace2026,
-    title = {GenDepTrace: Evidence-Aware Dependency Governance for Generative-AI-Generated Software},
-    author = {Danda, Jagan Mohan Reddy and IVSL, Haritha and Chejarla, Venkata Narayana and Kesavan, Murali Krishnan and Kolli, Abhinay and Mudumuntala, JohnBabu},
-    booktitle = {Proceedings of the International Conference on Secure Quantum Intelligence \& Trusted Systems (IC-SQITS)},
-    month = {Dec}
-    year = {2026}
-    }
+@inproceedings{gendeptrace2026,
+title = {GenDepTrace: Evidence-Aware Dependency Governance for Generative-AI-Generated Software},
+author = {Danda, Jagan Mohan Reddy and IVSL, Haritha and Chejarla, Venkata Narayana and Kesavan, Murali Krishnan and Kolli, Abhinay and Mudumuntala, JohnBabu},
+booktitle = {Proceedings of the International Conference on Secure Quantum Intelligence \& Trusted Systems (IC-SQITS)},
+month = {Dec}
+year = {2026}
+}
