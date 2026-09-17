@@ -92,8 +92,8 @@ pipeline.
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/https://github.com/jmreddy2106/gendeptrace_benchmark.git
-cd gendeptrace
+git clone https://github.com/jmreddy2106/gendeptrace_benchmark.git
+cd gendeptrace_benchmark
 
 ### 2. Create a virtual environment
 
@@ -288,8 +288,9 @@ The `transformers` library picks this up automatically.
 ### Non-gated alternatives
 
 If Llama access is delayed and you want a second model now:
-
-    QWEN_MODEL=Qwen/Qwen2.5-7B-Instruct bash scripts/08_full_pipeline.sh
+```bash
+QWEN_MODEL=Qwen/Qwen2.5-7B-Instruct bash scripts/08_full_pipeline.sh
+```
 
 Other ungated options:
 
